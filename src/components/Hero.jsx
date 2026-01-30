@@ -47,15 +47,27 @@ export default function Hero() {
         </p>
 
         <div className="mt-10 flex justify-center gap-6">
-          <button
-            className="px-8 py-4 bg-cyan-400 text-black rounded-2xl font-semibold
-                       hover:scale-110 hover:shadow-[0_0_40px_#22d3ee]
-                       transition"
-          >
-            Launch Simulator
-          </button>
+         <button
+  onClick={() => window.open(
+    "https://code-candid-simulator.vercel.app",
+    "_blank",
+    "noopener,noreferrer"
+  )}
+  className="px-8 py-4 bg-cyan-400 text-black rounded-2xl font-semibold
+             hover:scale-110 hover:shadow-[0_0_40px_#22d3ee]
+             transition"
+>
+  Launch Simulator
+</button>
+
+          
 
           <button
+           onClick={() => window.open(
+    "https://youtu.be/rFGNNeH_CxY",
+    "_blank",
+    "noopener,noreferrer"
+  )}
             className="px-8 py-4 border border-white/20 rounded-2xl
                        hover:border-cyan-400 transition"
           >

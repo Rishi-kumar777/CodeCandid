@@ -29,6 +29,7 @@ export default function Navbar() {
           </span>
         </Link>
 
+
         {/* DESKTOP NAV */}
         <nav className="hidden md:flex items-center gap-10">
           <NavLink to="/" className={navLinkClass}>
@@ -44,12 +45,16 @@ export default function Navbar() {
             How it works
           </NavLink>
 
-          <Link
-            to="/simulator"
-            className="ml-4 px-6 py-3 rounded-xl text-lg font-bold bg-cyan-400 text-black hover:bg-cyan-300 transition-all duration-300 shadow-lg hover:shadow-cyan-400/40"
-          >
-            Launch
-          </Link>
+          <a
+  href="https://code-candid-simulator.vercel.app"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="ml-4 px-6 py-3 rounded-xl text-lg font-bold 
+             bg-cyan-400 text-black 
+             hover:bg-cyan-300 transition-all duration-300"
+>
+  Launch
+</a>
         </nav>
 
         {/* HAMBURGER */}

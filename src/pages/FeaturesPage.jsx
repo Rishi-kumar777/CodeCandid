@@ -5,27 +5,27 @@ const features = [
   {
     title: "Step-by-step Execution",
     desc: "Watch every line of code execute in real time. Pause, rewind, and step forward to deeply understand how algorithms evolve internally.",
-    img: "/features/step-execution.png",
+    img: "./src/pages/features/15.png",
   },
   {
     title: "Call Stack Visualization",
     desc: "Understand recursion and nested function calls with a live call stack that grows and shrinks as functions execute.",
-    img: "/features/call-stack.png",
+    img: "./src/pages/features/18.png",
   },
   {
     title: "Variable Tracking",
     desc: "Track how variables change at each step and instantly see state transitions during execution.",
-    img: "/features/variables.png",
+    img: "./src/pages/features/19.png",
   },
   {
     title: "Graphs & Algorithms",
     desc: "Visualize graph traversals, sorting, and searching algorithms with animated transitions.",
-    img: "/features/graphs.png",
+    img: "./src/pages/features/12.png",
   },
   {
     title: "Dark Glass UI",
     desc: "A modern glass-morphism inspired dark UI designed for focus and clarity.",
-    img: "/features/ui.png",
+    img: "./src/pages/features/16.png",
   },
 ];
 
