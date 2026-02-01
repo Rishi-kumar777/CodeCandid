@@ -1,5 +1,7 @@
 
 import Antigravity from "./Antigravity";
+import { NavLink } from "react-router-dom";
+
 
 export default function Hero() {
   return (
@@ -47,32 +49,57 @@ export default function Hero() {
         </p>
 
         <div className="mt-10 flex justify-center gap-6">
-         <button
-  onClick={() => window.open(
-    "https://code-candid-simulator.vercel.app",
-    "_blank",
-    "noopener,noreferrer"
-  )}
-  className="px-8 py-4 bg-cyan-400 text-black rounded-2xl font-semibold
+          
+          
+          {/* <button
+            onClick={() => window.open(
+              "https://code-candid-simulator.vercel.app",
+              "_blank",
+              "noopener,noreferrer"
+            )}
+            className="px-8 py-4 bg-cyan-400 text-black rounded-2xl font-semibold
              hover:scale-110 hover:shadow-[0_0_40px_#22d3ee]
              transition"
->
-  Launch Simulator
-</button>
+          >
+            Launch Simulator
+          </button> */}
 
-          
+          <NavLink
+            to="/simulator-tool"
+            className={({ isActive }) =>
+              `px-8 py-4 bg-cyan-400 text-black rounded-2xl font-semibold
+       hover:scale-110 hover:shadow-[0_0_40px_#22d3ee]
+       transition ${isActive ? "ring-2 ring-cyan-300" : ""}`
+            }
+          >
+            Launch Simulator
+          </NavLink>
 
-          <button
-           onClick={() => window.open(
-    "https://youtu.be/rFGNNeH_CxY",
-    "_blank",
-    "noopener,noreferrer"
-  )}
+          {/* <button
+            onClick={() => window.open(
+              "https://youtu.be/rFGNNeH_CxY",
+              "_blank",
+              "noopener,noreferrer"
+            )}
             className="px-8 py-4 border border-white/20 rounded-2xl
                        hover:border-cyan-400 transition"
           >
             Watch Demo
-          </button>
+          </button> */}
+
+          <a
+            href="https://youtu.be/rFGNNeH_CxY"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-8 py-4 bg-white/10 backdrop-blur-md
+ border border-cyan-400 rounded-2xl
+             hover:border-cyan-400 hover:shadow-[0_0_20px_rgba(34,211,238,0.4)]
+             transition inline-flex items-center gap-2"
+          >
+            ▶ Watch Demo
+          </a>
+
+          
         </div>
       </div>
     </section>

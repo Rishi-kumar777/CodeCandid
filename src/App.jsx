@@ -3,6 +3,7 @@ import Landing from "./pages/Landing";
 import FeaturesPage from "./pages/FeaturesPage";
 import AboutPage from "./pages/AboutPage";
 import HowItWorksPage from "./pages/HowItWorksPage";
+import Simulator from "./pages/Simulator";
 
 export default function App() {
   return (
@@ -11,6 +12,7 @@ export default function App() {
       <Route path="/features" element={<FeaturesPage />} />
       <Route path="/about" element={<AboutPage />} />
       <Route path="/how-it-works" element={<HowItWorksPage />} />
+      <Route path="/simulator-tool" element={<Simulator />} />
     </Routes>
   );
 }

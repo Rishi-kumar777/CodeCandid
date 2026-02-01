@@ -24,6 +24,7 @@ export default function Navbar() {
           <span className="text-cyan-400 text-3xl md:text-4xl font-mono transition-transform duration-300 group-hover:scale-110">
             {"</>"}
           </span>
+
           <span className="text-white text-2xl md:text-3xl font-extrabold tracking-wide">
             Code<span className="text-cyan-400">Candid</span>
           </span>
@@ -45,16 +46,24 @@ export default function Navbar() {
             How it works
           </NavLink>
 
-          <a
+          {/* <a
   href="https://code-candid-simulator.vercel.app"
   target="_blank"
   rel="noopener noreferrer"
   className="ml-4 px-6 py-3 rounded-xl text-lg font-bold 
-             bg-cyan-400 text-black 
-             hover:bg-cyan-300 transition-all duration-300"
->
+  bg-cyan-400 text-black 
+  hover:bg-cyan-300 transition-all duration-300"
+  >
   Launch
-</a>
+  </a> */}
+
+
+          <NavLink to="/simulator-tool" className="ml-4 px-6 py-3 rounded-xl text-lg font-bold 
+  bg-cyan-400 text-black 
+  hover:bg-cyan-300 transition-all duration-300">
+            Launch
+          </NavLink>
+            
         </nav>
 
         {/* HAMBURGER */}

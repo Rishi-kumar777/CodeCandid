@@ -8,7 +8,7 @@ export default function Landing() {
     <>
       <Navbar />
       <Hero />
-       <HowItWorksTimeline />
+      <HowItWorksTimeline />
       <Features />
       <Footer />
     </>

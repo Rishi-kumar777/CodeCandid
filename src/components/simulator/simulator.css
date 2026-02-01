@@ -1,0 +1,73 @@
+html, body, #root { height: 100%; }
+
+
+/* ===== Premium Scrollbar (scoped) ===== */
+.scrollbar-premium {
+  scrollbar-width: thin;                 /* Firefox */
+  scrollbar-color: #a1a1aa transparent;  /* thumb track */
+}
+
+/* WebKit browsers */
+.scrollbar-premium::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-premium::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-premium::-webkit-scrollbar-thumb {
+  background-color: #a1a1aa; /* zinc-400 */
+  border-radius: 9999px;
+  transition: background-color 0.2s ease;
+}
+
+.scrollbar-premium::-webkit-scrollbar-thumb:hover {
+  background-color: #71717a; /* zinc-500 */
+}
+
+/* Dark mode */
+.dark .scrollbar-premium {
+  scrollbar-color: #52525b transparent; /* zinc-600 */
+}
+
+.dark .scrollbar-premium::-webkit-scrollbar-thumb {
+  background-color: #52525b;
+}
+
+.dark .scrollbar-premium::-webkit-scrollbar-thumb:hover {
+  background-color: #71717a;
+}
+
+
+
+
+:root { color-scheme: light; }
+.dark { color-scheme: dark; }
+
+
+
+
+/* ===== Event Log: new item flash (no JS timers) ===== */
+.event-log {
+  --event-normal: rgb(39 39 42);   /* zinc-800 */
+  --event-new: rgb(22 163 74);     /* green-600 */
+}
+
+.dark .event-log {
+  --event-normal: rgb(244 244 245); /* zinc-100 */
+  --event-new: rgb(52 211 153);     /* emerald-400 */
+}
+
+.event-item {
+  color: var(--event-normal);
+}
+
+.event-new {
+  animation: eventFlash 900ms ease-out forwards;
+}
+
+@keyframes eventFlash {
+  0%   { color: var(--event-new); }
+  100% { color: var(--event-normal); }
+}
