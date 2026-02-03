@@ -7,16 +7,17 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "server": "node server/server.js"
   },
   "dependencies": {
-    "@copilotkit/react-core": "^1.51.3",
-    "@copilotkit/react-ui": "^1.51.3",
     "@fortawesome/fontawesome-free": "^7.1.0",
+    "@google/genai": "^1.39.0",
     "@react-three/fiber": "^9.5.0",
+    "dotenv": "^16.4.7",
+    "express": "^4.19.2",
     "framer-motion": "^12.29.2",
     "lucide-react": "^0.563.0",
-    "openai": "^6.17.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-router-dom": "^7.13.0",
