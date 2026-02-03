@@ -12,7 +12,7 @@ export default function Navbar({ status, mentorMode, setMentorMode, theme, toggl
         <div className="flex items-center gap-3">
           <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-indigo-500 to-fuchsia-500" />
           <div>
-            <div className="text-sm font-semibold leading-4 text-zinc-900 dark:text-zinc-50">AlgoGlass</div>
+            <div className="text-sm font-semibold leading-4 text-zinc-900 dark:text-zinc-50"> Code<span className="text-cyan-400">Candid</span> </div>
             <div className="text-xs text-zinc-500 dark:text-zinc-400">Algorithmic “Glass Box” Simulator</div>
           </div>
         </div>
