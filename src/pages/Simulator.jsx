@@ -35,6 +35,128 @@ const ALGORITHMS = {
   mergeSort: { type: "array", build: (inputArr) => mergeSortSteps(inputArr), code: mergeSortCode },
 };
 
+const POINTER_STYLES = {
+  i: "border-cyan-300/40 text-cyan-700 dark:text-cyan-200 bg-cyan-400/10",
+  j: "border-indigo-300/40 text-indigo-700 dark:text-indigo-200 bg-indigo-400/10",
+  k: "border-emerald-300/40 text-emerald-700 dark:text-emerald-200 bg-emerald-400/10",
+  minIdx: "border-amber-300/40 text-amber-700 dark:text-amber-200 bg-amber-400/10",
+  pivot: "border-fuchsia-300/40 text-fuchsia-700 dark:text-fuchsia-200 bg-fuchsia-400/10",
+  low: "border-orange-300/40 text-orange-700 dark:text-orange-200 bg-orange-400/10",
+  high: "border-rose-300/40 text-rose-700 dark:text-rose-200 bg-rose-400/10",
+  l: "border-slate-300/40 text-slate-700 dark:text-slate-200 bg-slate-400/10",
+  m: "border-sky-300/40 text-sky-700 dark:text-sky-200 bg-sky-400/10",
+  r: "border-purple-300/40 text-purple-700 dark:text-purple-200 bg-purple-400/10",
+};
+
+const pickIndex = (step, vars, key) => {
+  const direct = step?.[key];
+  if (Number.isFinite(direct)) return direct;
+  const viaVars = vars?.[key];
+  if (Number.isFinite(viaVars)) return viaVars;
+  return null;
+};
+
+const buildPointers = (step) => {
+  if (!step) return [];
+  const vars = step.vars || {};
+  const list = [];
+  const push = (key, label) => {
+    const idx = pickIndex(step, vars, key);
+    if (!Number.isFinite(idx)) return;
+    list.push({ index: idx, label, className: POINTER_STYLES[key] });
+  };
+
+  push("i", "i");
+  push("j", "j");
+  push("k", "k");
+  push("minIdx", "min");
+  push("pivot", "pivot");
+  push("low", "low");
+  push("high", "high");
+  push("l", "l");
+  push("m", "m");
+  push("r", "r");
+
+  return list;
+};
+
+const buildSummary = (step, algoType) => {
+  if (!step) return "";
+  const vars = step.vars || {};
+
+  if (algoType === "array") {
+    if (Array.isArray(step.swapped) && step.swapped.length) {
+      return `Swap/Write at indices ${step.swapped.join(", ")}.`;
+    }
+    if (Array.isArray(step.comparing) && step.comparing.length) {
+      return `Comparing indices ${step.comparing.join(", ")}.`;
+    }
+    const i = pickIndex(step, vars, "i");
+    const j = pickIndex(step, vars, "j");
+    if (Number.isFinite(i) && Number.isFinite(j)) {
+      return `Pointers active: i=${i}, j=${j}.`;
+    }
+  }
+
+  if (algoType === "graph") {
+    if (step.current && step.neighbor) {
+      return `Checking edge ${step.current} -> ${step.neighbor}.`;
+    }
+    if (step.current) {
+      return `Processing node ${step.current}.`;
+    }
+  }
+
+  if (algoType === "dp") {
+    if (step.cursor) {
+      const { i, w } = step.cursor;
+      return `Evaluating dp[${i}][${w}] (${step.choice || "active"}).`;
+    }
+  }
+
+  const desc = step.desc ? String(step.desc).trim() : "";
+  return desc ? desc.split(".")[0] + "." : "";
+};
+
+const buildInvariants = (step, algorithm, algoType) => {
+  if (!step) return [];
+  const vars = step.vars || {};
+  const inv = [];
+
+  if (algoType === "array") {
+    const n = Number.isFinite(vars.n) ? vars.n : step.array?.length;
+    const i = pickIndex(step, vars, "i");
+    if (algorithm === "bubbleSort" && Number.isFinite(i) && Number.isFinite(n)) {
+      inv.push(`Sorted suffix length: ${i}`);
+    }
+    if ((algorithm === "selectionSort" || algorithm === "insertionSort") && Number.isFinite(i)) {
+      inv.push(`Sorted prefix: [0..${Math.max(0, i - 1)}]`);
+    }
+    const l = pickIndex(step, vars, "l");
+    const r = pickIndex(step, vars, "r");
+    if (algorithm === "mergeSort" && Number.isFinite(l) && Number.isFinite(r)) {
+      inv.push(`Working range: [${l}..${r}]`);
+    }
+  }
+
+  if (algoType === "graph") {
+    const visitedSize = step.visited instanceof Set ? step.visited.size : Array.isArray(step.visited) ? step.visited.length : null;
+    if (Number.isFinite(visitedSize)) inv.push(`Visited: ${visitedSize}`);
+    if (Array.isArray(step.queue)) inv.push(`Queue: ${step.queue.length}`);
+    if (Array.isArray(step.stack)) inv.push(`Stack: ${step.stack.length}`);
+    if (Array.isArray(step.order)) inv.push(`Order: ${step.order.length}`);
+  }
+
+  if (algoType === "dp") {
+    if (step.cursor && Number.isFinite(step.cursor.i)) {
+      inv.push(`Rows computed: 0..${step.cursor.i}`);
+    }
+    if (Number.isFinite(vars.W)) inv.push(`Capacity: ${vars.W}`);
+  }
+
+  return inv;
+};
+
 function computeOutput(algorithm, inputArr) {
   const meta = ALGORITHMS[algorithm];
   if (!meta || meta.type !== "array") return [];
@@ -121,6 +243,9 @@ export default function Simulator() {
 
   const maxStep = Math.max(0, steps.length - 1);
   const cur = steps[stepIndex] || null;
+  const pointers = useMemo(() => (algoType === "array" ? buildPointers(cur) : []), [cur, algoType]);
+  const stepSummary = useMemo(() => buildSummary(cur, algoType), [cur, algoType]);
+  const stepInvariants = useMemo(() => buildInvariants(cur, algorithm, algoType), [cur, algorithm, algoType]);
 
   // switch algo type + reset
   useEffect(() => {
@@ -364,7 +489,12 @@ export default function Simulator() {
   return (
     // dark class is ONLY applied inside Simulator page
     <div className={theme === "dark" ? "dark" : ""}>
-      <div className="min-h-screen bg-zinc-100 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50">
+      <div
+        className={[
+          "min-h-screen pt-24",
+          theme === "dark" ? "bg-[#0b0f16] text-slate-100" : "bg-slate-100 text-slate-900",
+        ].join(" ")}
+      >
         <Navbar
           status={status}
           mentorMode={mentorMode}
@@ -389,7 +519,7 @@ export default function Simulator() {
         {algoType === "array" ? (
           <InputOutput inputArr={inputArr} setInputArr={setInputArr} outputArr={outputArr} />
         ) : algoType === "graph" ? (
-          <div className="max-w-[1400px] mx-auto px-4 mt-4">
+          <div className="max-w-7xl mx-auto px-6 mt-4">
             <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-4">
               <div className="text-sm font-semibold">Graph Input</div>
               <div className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">Start node for traversal</div>
@@ -399,7 +529,7 @@ export default function Simulator() {
                 <select
                   value={graphInput.start}
                   onChange={(e) => setGraphInput((p) => ({ ...p, start: e.target.value }))}
-                  className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 px-3 py-2 text-sm"
+                  className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 px-3 py-2 text-sm"
                 >
                   {graphInput.graph.nodes.map((n) => (
                     <option key={n.id} value={n.id}>
@@ -411,7 +541,7 @@ export default function Simulator() {
             </div>
           </div>
         ) : (
-          <div className="max-w-[1400px] mx-auto px-4 mt-4">
+          <div className="max-w-7xl mx-auto px-6 mt-4">
             <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-4">
               <div className="text-sm font-semibold">DP Input (0/1 Knapsack)</div>
               <div className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">Comma-separated integers</div>
@@ -432,7 +562,7 @@ export default function Simulator() {
                           .filter(Number.isFinite),
                       }))
                     }
-                    className="mt-1 w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-transparent px-3 py-2 text-sm"
+                    className="mt-1 w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 px-3 py-2 text-sm"
                   />
                 </div>
 
@@ -451,7 +581,7 @@ export default function Simulator() {
                           .filter(Number.isFinite),
                       }))
                     }
-                    className="mt-1 w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-transparent px-3 py-2 text-sm"
+                    className="mt-1 w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 px-3 py-2 text-sm"
                   />
                 </div>
 
@@ -461,7 +591,7 @@ export default function Simulator() {
                     type="number"
                     value={dpInput.W}
                     onChange={(e) => setDpInput((p) => ({ ...p, W: Number(e.target.value) }))}
-                    className="mt-1 w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-transparent px-3 py-2 text-sm"
+                    className="mt-1 w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 px-3 py-2 text-sm"
                   />
                 </div>
               </div>
@@ -469,7 +599,7 @@ export default function Simulator() {
           </div>
         )}
 
-        <div className="max-w-[1400px] mx-auto px-4 mt-2 text-xs text-zinc-500">
+        <div className="max-w-7xl mx-auto px-6 mt-2 text-xs text-zinc-500">
           Debug: inputLen={inputArr.length}, steps={steps.length}, stepIndex={stepIndex}
         </div>
 
@@ -499,8 +629,8 @@ export default function Simulator() {
           feedback={mentorFeedback}
         />
 
-        <div className="max-w-[1400px] mx-auto px-4 mt-4">
-          <div className="h-[430px]">
+        <div className="max-w-7xl mx-auto px-6 mt-4">
+          <div className="h-[520px]">
             <ResizableSplit
               initialLeftPct={55}
               left={
@@ -511,6 +641,7 @@ export default function Simulator() {
                       arr={cur?.array ?? []}
                       comparing={cur?.comparing ?? null}
                       swapped={cur?.swapped ?? null}
+                      pointers={pointers}
                     />
                   ) : algoType === "graph" ? (
                     <GraphVisualizer show={steps.length > 0} step={cur} />
@@ -525,7 +656,7 @@ export default function Simulator() {
                       disabled={mentorMode && mentorLocked}
                       title={mentorMode && mentorLocked ? "Mentor locked: answer or skip" : ""}
                     >
-                      Next Step (→)
+                      Next Step (->)
                     </button>
                   </div>
                 </div>
@@ -535,11 +666,11 @@ export default function Simulator() {
           </div>
         </div>
 
-        <div className="max-w-[1400px] mx-auto px-4 mt-4 pb-8">
+        <div className="max-w-7xl mx-auto px-6 mt-4 pb-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             <VariablesPanel vars={cur?.vars || {}} />
             <CallStackPanel stack={cur?.callStack || ["—"]} />
-            <StepDescPanel log={eventLog} />
+            <StepDescPanel log={eventLog} current={cur} summary={stepSummary} invariants={stepInvariants} />
           </div>
         </div>
 

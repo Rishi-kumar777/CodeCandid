@@ -1,5 +1,5 @@
-export default function Visualizer({ show, arr, comparing, swapped }) {
-  const CHART_H = 260;
+export default function Visualizer({ show, arr, comparing, swapped, pointers = [] }) {
+  const CHART_H = 320;
 
   // If steps are not built yet, show placeholder
   if (!show) {
@@ -40,6 +40,13 @@ export default function Visualizer({ show, arr, comparing, swapped }) {
 
   const max = Math.max(1, ...safeArr);
 
+  const pointerMap = new Map();
+  (Array.isArray(pointers) ? pointers : []).forEach((p) => {
+    if (!Number.isFinite(p?.index)) return;
+    if (!pointerMap.has(p.index)) pointerMap.set(p.index, []);
+    pointerMap.get(p.index).push(p);
+  });
+
   return (
     <div className="h-full p-4 bg-white dark:bg-zinc-950">
       <div className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
@@ -57,24 +64,53 @@ export default function Visualizer({ show, arr, comparing, swapped }) {
         {safeArr.map((v, idx) => {
           const isComparing = comparing?.includes(idx);
           const isSwapped = swapped?.includes(idx);
-          const barH = Math.max(8, Math.round((v / max) * (CHART_H - 40)));
+          const barH = Math.max(8, Math.round((v / max) * (CHART_H - 80)));
+          const labels = pointerMap.get(idx) || [];
+
+          const roleText = [
+            isSwapped ? "swap" : null,
+            isComparing ? "compare" : null,
+            labels.length ? labels.map((l) => l.label).join(", ") : null,
+          ]
+            .filter(Boolean)
+            .join(" • ");
 
           return (
             <div key={idx} className="flex-1 flex flex-col items-center justify-end gap-1">
+              {labels.length > 0 && (
+                <div className="flex flex-col items-center gap-1 mb-1">
+                  {labels.map((p) => (
+                    <div
+                      key={`${p.label}-${idx}`}
+                      className={[
+                        "text-[10px] px-2 py-0.5 rounded-full border",
+                        p.className || "border-white/10 text-white/80 bg-white/10",
+                      ].join(" ")}
+                      title={`${p.label} = ${idx}`}
+                    >
+                      {p.label}
+                    </div>
+                  ))}
+                </div>
+              )}
+
               <div
                 className={[
                   "w-full rounded-lg transition-all duration-300",
                   isSwapped
-                    ? "bg-amber-500"
+                    ? "sim-swap"
                     : isComparing
-                    ? "bg-indigo-500"
-                    : "bg-zinc-400 dark:bg-zinc-700",
+                    ? "sim-compare"
+                    : "sim-bar-base",
                 ].join(" ")}
                 style={{ height: `${barH}px` }}
-                title={`${v}`}
+                title={`Index ${idx} • Value ${v}${roleText ? ` • ${roleText}` : ""}`}
               />
               <div className="text-[10px] text-zinc-600 dark:text-zinc-300">
                 {v}
+              </div>
+              <div className="text-[9px] text-zinc-500 dark:text-zinc-400">
+                {idx}
               </div>
             </div>
           );

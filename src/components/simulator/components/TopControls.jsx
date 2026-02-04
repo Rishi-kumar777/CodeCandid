@@ -11,7 +11,7 @@ export default function TopControls({
   onLoadExample,
 }) {
   return (
-    <div className="max-w-[1400px] mx-auto px-4 pt-4">
+    <div className="max-w-7xl mx-auto px-6 pt-4">
       <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-4">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-3 items-end">
           <div className="md:col-span-2">
@@ -59,7 +59,7 @@ export default function TopControls({
               max={40}
               value={n}
               onChange={(e) => setN(Number(e.target.value))}
-              className="mt-1 w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-transparent px-3 py-2 text-sm"
+              className="mt-1 w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 px-3 py-2 text-sm"
             />
           </div>
 
@@ -71,7 +71,7 @@ export default function TopControls({
               max={999}
               value={randMax}
               onChange={(e) => setRandMax(Number(e.target.value))}
-              className="mt-1 w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-transparent px-3 py-2 text-sm"
+              className="mt-1 w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 px-3 py-2 text-sm"
             />
           </div>
 
@@ -84,7 +84,7 @@ export default function TopControls({
             </button>
             <button
               onClick={onLoadExample}
-              className="flex-1 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-900 px-4 py-2 text-sm transition"
+              className="flex-1 rounded-xl border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-100 hover:bg-zinc-50 dark:hover:bg-zinc-900 px-4 py-2 text-sm transition"
             >
               Load Example
             </button>

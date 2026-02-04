@@ -71,3 +71,88 @@ html, body, #root { height: 100%; }
   0%   { color: var(--event-new); }
   100% { color: var(--event-normal); }
 }
+
+/* ===== Visualization Roles + Subtle Motion ===== */
+:root {
+  --sim-cyan: #22d3ee;
+  --sim-indigo: #6366f1;
+  --sim-amber: #f59e0b;
+  --sim-emerald: #10b981;
+  --sim-zinc: #94a3b8;
+}
+
+.sim-bar-base {
+  background-color: var(--sim-zinc);
+}
+
+.dark .sim-bar-base {
+  background-color: #475569; /* slate-600 */
+}
+
+.sim-compare {
+  background-color: var(--sim-indigo);
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.35), 0 0 18px rgba(99, 102, 241, 0.35);
+  animation: simPulse 1.4s ease-in-out infinite;
+}
+
+.sim-swap {
+  background-color: var(--sim-amber);
+  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.35), 0 0 16px rgba(245, 158, 11, 0.35);
+  animation: simPop 280ms ease-out;
+}
+
+.sim-current {
+  background-color: var(--sim-cyan);
+  box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.35), 0 0 16px rgba(34, 211, 238, 0.35);
+}
+
+@keyframes simPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+@keyframes simPop {
+  0% { transform: scale(0.96); }
+  60% { transform: scale(1.04); }
+  100% { transform: scale(1); }
+}
+
+/* Graph role colors */
+.sim-edge {
+  stroke: #cbd5f5;
+}
+
+.dark .sim-edge {
+  stroke: #334155;
+}
+
+.sim-edge-active {
+  stroke: var(--sim-indigo);
+  filter: drop-shadow(0 0 6px rgba(99, 102, 241, 0.35));
+}
+
+.sim-node-default {
+  fill: #ffffff;
+  stroke: #e2e8f0;
+}
+
+.dark .sim-node-default {
+  fill: #0b0f16;
+  stroke: #334155;
+}
+
+.sim-node-visited {
+  fill: #475569;
+  stroke: #334155;
+}
+
+.sim-node-current {
+  fill: var(--sim-cyan);
+  stroke: var(--sim-cyan);
+}
+
+.sim-node-neighbor {
+  fill: var(--sim-indigo);
+  stroke: var(--sim-indigo);
+}

@@ -68,20 +68,24 @@ export default function DPVisualizer({ show, step }) {
             {dp.flatMap((row, i) =>
               row.map((val, w) => {
                 const isActive = cursor && cursor.i === i && cursor.w === w;
+                const activeRing = isActive
+                  ? choice === "take"
+                    ? "ring-2 ring-emerald-500/60"
+                    : choice === "skip"
+                    ? "ring-2 ring-indigo-500/60"
+                    : "ring-2 ring-cyan-500/60"
+                  : "";
                 return (
                   <div
                     key={`${i}-${w}`}
                     className={[
                       "rounded-lg border text-xs font-mono px-2 py-2 text-center transition",
                       "border-zinc-200 dark:border-zinc-800",
-                      "bg-white dark:bg-zinc-950",
-                      isActive
-                        ? choice === "take"
-                          ? "ring-2 ring-emerald-500/50"
-                          : "ring-2 ring-indigo-500/50"
-                        : "",
+                      "bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100",
+                      activeRing,
+                      isActive ? "animate-pulse" : "",
                     ].join(" ")}
-                    title={`dp[${i}][${w}]`}
+                    title={`dp[${i}][${w}] = ${val}${isActive ? ` • ${choice || "active"}` : ""}`}
                   >
                     {val}
                   </div>

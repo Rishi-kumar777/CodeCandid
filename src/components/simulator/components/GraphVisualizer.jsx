@@ -95,17 +95,14 @@ export default function GraphVisualizer({ show, step }) {
 
             return (
               <g key={idx}>
+                <title>{`Edge ${e.from} → ${e.to}${isActive ? " (active)" : ""}`}</title>
                 <line
                   x1={a.x}
                   y1={a.y}
                   x2={b.x}
                   y2={b.y}
                   strokeWidth="3"
-                  className={
-                    isActive
-                      ? "stroke-emerald-500"
-                      : "stroke-zinc-300 dark:stroke-zinc-700"
-                  }
+                  className={isActive ? "sim-edge-active" : "sim-edge"}
                 />
                 {/* (optional) arrowheads for directed graphs could be added later */}
               </g>
@@ -118,28 +115,50 @@ export default function GraphVisualizer({ show, step }) {
             const isCurrent = current === n.id;
             const isNeighbor = neighbor === n.id;
 
-            const ring =
-              isCurrent ? "stroke-indigo-500" : isNeighbor ? "stroke-emerald-500" : "stroke-zinc-300 dark:stroke-zinc-700";
-
-            const fill =
+            const nodeClass =
               isCurrent
-                ? "fill-indigo-500"
+                ? "sim-node-current"
+                : isNeighbor
+                ? "sim-node-neighbor"
                 : isVisited
-                ? "fill-zinc-500 dark:fill-zinc-600"
-                : "fill-white dark:fill-zinc-950";
+                ? "sim-node-visited"
+                : "sim-node-default";
 
             const text =
-              isCurrent || isVisited ? "fill-white" : "fill-zinc-900 dark:fill-zinc-50";
+              isCurrent || isNeighbor || isVisited
+                ? "fill-white"
+                : "fill-zinc-900 dark:fill-zinc-50";
 
             return (
               <g key={n.id}>
+                <title>{`Node ${n.id}${isCurrent ? " (current)" : isNeighbor ? " (neighbor)" : isVisited ? " (visited)" : ""}`}</title>
                 <circle
                   cx={n.x}
                   cy={n.y}
                   r="18"
-                  className={`${fill} ${ring}`}
+                  className={nodeClass}
                   strokeWidth="3"
                 />
+                {isCurrent && (
+                  <text
+                    x={n.x}
+                    y={n.y - 24}
+                    textAnchor="middle"
+                    className="fill-cyan-200 text-[9px] font-semibold"
+                  >
+                    current
+                  </text>
+                )}
+                {isNeighbor && !isCurrent && (
+                  <text
+                    x={n.x}
+                    y={n.y - 24}
+                    textAnchor="middle"
+                    className="fill-indigo-200 text-[9px] font-semibold"
+                  >
+                    neighbor
+                  </text>
+                )}
                 <text
                   x={n.x}
                   y={n.y + 5}
@@ -155,9 +174,9 @@ export default function GraphVisualizer({ show, step }) {
       </div>
 
       <div className="mt-3 text-xs text-zinc-500 dark:text-zinc-400">
-        Legend: <span className="text-indigo-600 dark:text-indigo-400">current</span>,{" "}
-        <span className="text-zinc-600 dark:text-zinc-300">visited</span>,{" "}
-        <span className="text-emerald-600 dark:text-emerald-400">neighbor/active edge</span>
+        Legend: <span className="text-cyan-400">current</span>,{" "}
+        <span className="text-zinc-500 dark:text-zinc-400">visited</span>,{" "}
+        <span className="text-indigo-400">neighbor/active edge</span>
       </div>
     </div>
   );

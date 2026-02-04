@@ -14,9 +14,10 @@ export default function PlaybackControls({
   hasSteps,
   mentorLocked,
 }) {
+  // milestone visuals removed per request
 
   return (
-    <div className="max-w-[1400px] mx-auto px-4 mt-4">
+    <div className="max-w-7xl mx-auto px-6 mt-4">
       <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-4">
         <div className="flex flex-col md:flex-row md:items-center gap-3 justify-between">
           <div className="flex gap-2 flex-wrap items-center">
@@ -29,7 +30,7 @@ export default function PlaybackControls({
 
             <button
               onClick={onReset}
-              className="rounded-xl border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-900 px-4 py-2 text-sm transition"
+              className="rounded-xl border border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-100 hover:bg-zinc-50 dark:hover:bg-zinc-900 px-4 py-2 text-sm transition"
             >
               Reset
             </button>
@@ -41,6 +42,7 @@ export default function PlaybackControls({
               className="rounded-xl border border-zinc-200 dark:border-zinc-800
                px-3 py-2 text-sm transition
                disabled:opacity-50 disabled:cursor-not-allowed
+               text-zinc-700 dark:text-zinc-100 disabled:text-zinc-400 dark:disabled:text-zinc-500
                hover:bg-zinc-50 dark:hover:bg-zinc-900"
               title="Previous step"
             >
@@ -72,6 +74,7 @@ export default function PlaybackControls({
               className="rounded-xl border border-zinc-200 dark:border-zinc-800
                px-3 py-2 text-sm transition
                disabled:opacity-50 disabled:cursor-not-allowed
+               text-zinc-700 dark:text-zinc-100 disabled:text-zinc-400 dark:disabled:text-zinc-500
                hover:bg-zinc-50 dark:hover:bg-zinc-900"
               title={
                 mentorLocked ? "Mentor locked: answer or skip" : "Next step"
