@@ -544,7 +544,7 @@ export default function Simulator() {
         </div>
 
         {algorithm && <AlgorithmInfo meta={algoMeta} />}
-        <ChatbotPanel algorithm={algorithm} language={language} step={cur} code={code} />
+        <ChatbotPanel algorithm={algorithm} language={language} step={cur} code={code} mentorMode={mentorMode} mentorLocked={mentorLocked} mentorFeedback={mentorFeedback} mentorQuestion={cur?.question}/>
       </div>
     </div>
   );
