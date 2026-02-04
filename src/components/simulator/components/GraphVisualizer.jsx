@@ -36,6 +36,10 @@ export default function GraphVisualizer({ show, step }) {
   const edges = graph.edges || [];
   const isDirected = !!graph.directed;
 
+  const hasStack = Array.isArray(stack);
+  const stackItems = hasStack ? stack : [];
+  const stackDisplay = [...stackItems].reverse();
+
   const visitedSet = visited instanceof Set ? visited : new Set(visited || []);
 
   // Determine "active edge" during exploration

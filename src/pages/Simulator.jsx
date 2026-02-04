@@ -9,7 +9,7 @@ import ResizableSplit from "../components/simulator/components/ResizableSplit.js
 import CodePanel from "../components/simulator/components/CodePanel.jsx";
 import MentorPanel from "../components/simulator/components/MentorPanel.jsx";
 import ChatbotPanel from "../components/simulator/components/ChatbotPanel.jsx";
-import { VariablesPanel, CallStackPanel, StepDescPanel } from "../components/simulator/components/StatePanels.jsx";
+import { VariablesPanel, CallStackPanel, StackPanel, StepDescPanel } from "../components/simulator/components/StatePanels.jsx";
 import AlgorithmInfo from "../components/simulator/components/AlgorithmInfo.jsx";
 import { ALGO_META } from "../components/simulator/algorithms/meta.js";
 
@@ -675,7 +675,7 @@ export default function Simulator() {
         </div>
 
         {algorithm && <AlgorithmInfo meta={algoMeta} />}
-        <ChatbotPanel algorithm={algorithm} language={language} step={cur} code={code} />
+        <ChatbotPanel algorithm={algorithm} language={language} step={cur} code={code} mentorMode={mentorMode} mentorLocked={mentorLocked} mentorFeedback={mentorFeedback} mentorQuestion={cur?.question}/>
       </div>
     </div>
   );
