@@ -1,3 +1,5 @@
+import { useEffect, useRef } from "react";
+
 export function VariablesPanel({ vars }) {
   const entries = Object.entries(vars || {});
 
@@ -61,10 +63,56 @@ export function CallStackPanel({ stack }) {
   );
 }
 
+export function StackPanel({ stack }) {
+  const items = Array.isArray(stack) ? stack : [];
+  const hasItems = items.length > 0;
+  const display = hasItems ? [...items].reverse() : [];
+
+  return (
+    <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-4 flex flex-col h-[260px]">
+      <div className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
+        Data Stack
+      </div>
+      <div className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
+        Top element shown first
+      </div>
+
+      <div className="mt-3 flex-1 overflow-auto pr-1 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 p-3 font-mono text-xs space-y-1 scrollbar-premium">
+        {!hasItems ? (
+          <div className="text-sm text-zinc-500">—</div>
+        ) : (
+          display.map((item, i) => {
+            const isTop = i === 0;
+            const index = items.length - 1 - i;
+
+            return (
+              <div
+                key={`${index}-${String(item)}`}
+                className={[
+                  "px-2 py-1 rounded-md border transition-colors",
+                  isTop
+                    ? "bg-cyan-100 text-cyan-900 border-cyan-200 dark:bg-cyan-900/40 dark:text-cyan-200 dark:border-cyan-800/60 font-semibold"
+                    : "bg-white/60 text-zinc-700 border-zinc-200 dark:bg-zinc-950/40 dark:text-zinc-300 dark:border-zinc-800",
+                ].join(" ")}
+              >
+                <span className="mr-2 text-[10px] text-zinc-400">#{index}</span>
+                {String(item)}
+                {isTop && (
+                  <span className="ml-2 text-[10px] uppercase tracking-wide text-cyan-700 dark:text-cyan-300">
+                    Top
+                  </span>
+                )}
+              </div>
+            );
+          })
+        )}
+      </div>
+    </div>
+  );
+}
 
 
 
-import { useEffect, useRef } from "react";
 
 export function StepDescPanel({ log }) {
   const items = Array.isArray(log) ? log : [];

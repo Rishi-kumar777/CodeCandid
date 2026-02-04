@@ -36,6 +36,10 @@ export default function GraphVisualizer({ show, step }) {
   const edges = graph.edges || [];
   const isDirected = !!graph.directed;
 
+  const hasStack = Array.isArray(stack);
+  const stackItems = hasStack ? stack : [];
+  const stackDisplay = [...stackItems].reverse();
+
   const visitedSet = visited instanceof Set ? visited : new Set(visited || []);
 
   // Determine "active edge" during exploration
@@ -79,79 +83,128 @@ export default function GraphVisualizer({ show, step }) {
         </div>
       </div>
 
-      <div
-        className="mt-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 overflow-hidden"
-        style={{ height: CHART_H }}
-      >
-        <svg width="100%" height="100%" viewBox="0 0 420 320">
-          {/* edges */}
-          {edges.map((e, idx) => {
-            const a = nodeById.get(e.from);
-            const b = nodeById.get(e.to);
-            if (!a || !b) return null;
+      <div className="mt-4 grid grid-cols-1 lg:grid-cols-[1fr_170px] gap-3">
+        <div
+          className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 overflow-hidden"
+          style={{ height: CHART_H }}
+        >
+          <svg width="100%" height="100%" viewBox="0 0 420 320">
+            {/* edges */}
+            {edges.map((e, idx) => {
+              const a = nodeById.get(e.from);
+              const b = nodeById.get(e.to);
+              if (!a || !b) return null;
 
-            const k = edgeKey(e.from, e.to);
-            const isActive = activeKey && k === activeKey;
+              const k = edgeKey(e.from, e.to);
+              const isActive = activeKey && k === activeKey;
 
-            return (
-              <g key={idx}>
-                <line
-                  x1={a.x}
-                  y1={a.y}
-                  x2={b.x}
-                  y2={b.y}
-                  strokeWidth="3"
-                  className={
-                    isActive
-                      ? "stroke-emerald-500"
-                      : "stroke-zinc-300 dark:stroke-zinc-700"
-                  }
-                />
-                {/* (optional) arrowheads for directed graphs could be added later */}
-              </g>
-            );
-          })}
+              return (
+                <g key={idx}>
+                  <line
+                    x1={a.x}
+                    y1={a.y}
+                    x2={b.x}
+                    y2={b.y}
+                    strokeWidth="3"
+                    className={
+                      isActive
+                        ? "stroke-emerald-500"
+                        : "stroke-zinc-300 dark:stroke-zinc-700"
+                    }
+                  />
+                  {/* (optional) arrowheads for directed graphs could be added later */}
+                </g>
+              );
+            })}
 
-          {/* nodes */}
-          {nodes.map((n) => {
-            const isVisited = visitedSet.has(n.id);
-            const isCurrent = current === n.id;
-            const isNeighbor = neighbor === n.id;
+            {/* nodes */}
+            {nodes.map((n) => {
+              const isVisited = visitedSet.has(n.id);
+              const isCurrent = current === n.id;
+              const isNeighbor = neighbor === n.id;
 
-            const ring =
-              isCurrent ? "stroke-indigo-500" : isNeighbor ? "stroke-emerald-500" : "stroke-zinc-300 dark:stroke-zinc-700";
+              const ring =
+                isCurrent
+                  ? "stroke-indigo-500"
+                  : isNeighbor
+                  ? "stroke-emerald-500"
+                  : "stroke-zinc-300 dark:stroke-zinc-700";
 
-            const fill =
-              isCurrent
-                ? "fill-indigo-500"
-                : isVisited
-                ? "fill-zinc-500 dark:fill-zinc-600"
-                : "fill-white dark:fill-zinc-950";
+              const fill =
+                isCurrent
+                  ? "fill-indigo-500"
+                  : isVisited
+                  ? "fill-zinc-500 dark:fill-zinc-600"
+                  : "fill-white dark:fill-zinc-950";
 
-            const text =
-              isCurrent || isVisited ? "fill-white" : "fill-zinc-900 dark:fill-zinc-50";
+              const text =
+                isCurrent || isVisited ? "fill-white" : "fill-zinc-900 dark:fill-zinc-50";
 
-            return (
-              <g key={n.id}>
-                <circle
-                  cx={n.x}
-                  cy={n.y}
-                  r="18"
-                  className={`${fill} ${ring}`}
-                  strokeWidth="3"
-                />
-                <text
-                  x={n.x}
-                  y={n.y + 5}
-                  textAnchor="middle"
-                  className={`${text} text-[12px] font-semibold`}
-                >
-                  {n.id}
-                </text>
-              </g>
-            );
-          })}
-        </svg>
+              return (
+                <g key={n.id}>
+                  <circle
+                    cx={n.x}
+                    cy={n.y}
+                    r="18"
+                    className={`${fill} ${ring}`}
+                    strokeWidth="3"
+                  />
+                  <text
+                    x={n.x}
+                    y={n.y + 5}
+                    textAnchor="middle"
+                    className={`${text} text-[12px] font-semibold`}
+                  >
+                    {n.id}
+                  </text>
+                </g>
+              );
+            })}
+          </svg>
+        </div>
+
+        {hasStack && (
+          <div
+            className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 p-3 flex flex-col"
+            style={{ height: CHART_H }}
+          >
+            <div className="text-xs font-semibold text-zinc-700 dark:text-zinc-200">
+              Stack
+            </div>
+            <div className="text-[10px] text-zinc-500 dark:text-zinc-400">
+              Top is highlighted
+            </div>
+
+            <div className="mt-2 flex-1 flex flex-col justify-end gap-2">
+              {stackDisplay.length === 0 ? (
+                <div className="text-xs text-zinc-500">Empty</div>
+              ) : (
+                stackDisplay.map((item, i) => {
+                  const isTop = i === 0;
+
+                  return (
+                    <div
+                      key={`${i}-${String(item)}`}
+                      className={[
+                        "rounded-lg border px-2 py-1 text-xs text-center transition-colors",
+                        isTop
+                          ? "bg-cyan-500 text-white border-cyan-400 shadow-sm shadow-cyan-500/30"
+                          : "bg-white dark:bg-zinc-950 text-zinc-700 dark:text-zinc-200 border-zinc-200 dark:border-zinc-800",
+                      ].join(" ")}
+                    >
+                      {String(item)}
+                      {isTop && (
+                        <span className="ml-2 text-[10px] uppercase tracking-wide text-white/80">
+                          Top
+                        </span>
+                      )}
+                    </div>
+                  );
+                })
+              )}
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="mt-3 text-xs text-zinc-500 dark:text-zinc-400">
