@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../../context/AuthContext";
 
 export default function Navbar({ status, mentorMode, setMentorMode, theme, toggleTheme }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const { user, logout } = useAuth();
   const pill =
     status === "playing"
       ? "bg-blue-600"
@@ -49,6 +51,26 @@ export default function Navbar({ status, mentorMode, setMentorMode, theme, toggl
           >
             Theme: {theme === "dark" ? "Dark" : "Light"}
           </button>
+
+          {user && (
+            <>
+              <span className="text-zinc-700 dark:text-white/80 text-lg md:text-xl font-semibold">
+                {user.name}
+              </span>
+              <Link
+                to="/history"
+                className="transition-all duration-300 text-lg md:text-xl font-semibold text-zinc-700 dark:text-white/80 hover:text-cyan-500 dark:hover:text-cyan-300"
+              >
+                History
+              </Link>
+              <button
+                onClick={logout}
+                className="transition-all duration-300 text-lg md:text-xl font-semibold text-zinc-700 dark:text-white/80 hover:text-rose-500 dark:hover:text-rose-300"
+              >
+                Log out
+              </button>
+            </>
+          )}
         </nav>
 
         <button
@@ -108,6 +130,30 @@ export default function Navbar({ status, mentorMode, setMentorMode, theme, toggl
             >
               Theme: {theme === "dark" ? "Dark" : "Light"}
             </button>
+
+            {user && (
+              <>
+                <span className="text-zinc-700 dark:text-white/80 text-base font-semibold">
+                  {user.name}
+                </span>
+                <Link
+                  to="/history"
+                  onClick={() => setMenuOpen(false)}
+                  className="text-left transition-all duration-300 text-base font-semibold text-zinc-700 dark:text-white/80 hover:text-cyan-500 dark:hover:text-cyan-300"
+                >
+                  History
+                </Link>
+                <button
+                  onClick={() => {
+                    logout();
+                    setMenuOpen(false);
+                  }}
+                  className="text-left transition-all duration-300 text-base font-semibold text-zinc-700 dark:text-white/80 hover:text-rose-500 dark:hover:text-rose-300"
+                >
+                  Log out
+                </button>
+              </>
+            )}
           </div>
         </div>
       )}

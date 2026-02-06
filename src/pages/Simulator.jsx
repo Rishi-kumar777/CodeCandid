@@ -12,6 +12,8 @@ import ChatbotPanel from "../components/simulator/components/ChatbotPanel.jsx";
 import { VariablesPanel, CallStackPanel, StepDescPanel } from "../components/simulator/components/StatePanels.jsx";
 import AlgorithmInfo from "../components/simulator/components/AlgorithmInfo.jsx";
 import { ALGO_META } from "../components/simulator/algorithms/meta.js";
+import { useAuth } from "../context/AuthContext";
+import { addHistoryEntry } from "../utils/history";
 
 import ArrayVisualizer from "../components/simulator/components/ArrayVisualizer.jsx";
 import GraphVisualizer from "../components/simulator/components/GraphVisualizer.jsx";
@@ -164,6 +166,7 @@ function computeOutput(algorithm, inputArr) {
 }
 
 export default function Simulator() {
+  const { user } = useAuth();
   // ✅ Simulator-only theme (DO NOT touch document.documentElement)
   const [theme, setTheme] = useState(() => localStorage.getItem("simulator-theme") || "dark");
 
@@ -406,6 +409,15 @@ export default function Simulator() {
     if (!built || built.length === 0) {
       alert("No steps were generated. Check the algorithm builder.");
       return;
+    }
+
+    const algoMeta = ALGO_META[algorithm];
+    if (user) {
+      addHistoryEntry(user.id, {
+        algorithm,
+        name: algoMeta?.name || algorithm,
+        type: algoMeta?.type || "",
+      });
     }
 
     setSteps(built);
