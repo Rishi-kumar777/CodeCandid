@@ -714,9 +714,11 @@ export default function Simulator() {
           </div>
         )}
 
-        <div className="max-w-10xl mx-auto px-6 mt-2 text-xs text-zinc-500">
+
+        {/* For Debugging */}
+        {/* <div className="max-w-10xl mx-auto px-6 mt-2 text-xs text-zinc-500">
           Debug: inputLen={inputArr.length}, steps={steps.length}, stepIndex={stepIndex}
-        </div>
+        </div> */}
 
         <PlaybackControls
           status={status}
