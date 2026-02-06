@@ -1,5 +1,5 @@
 export default function DPVisualizer({ show, step }) {
-  const H = 320;
+  const H = 380;
 
   if (!show) {
     return (

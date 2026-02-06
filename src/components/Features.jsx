@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 
 const features = [
   "Step-by-step execution",
-  "Call stack visualization",
+  "Call stack Tracking",
   "Variable tracking",
   "Sorting & graph algorithms",
   "Mentor learning mode",

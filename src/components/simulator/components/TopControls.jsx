@@ -11,7 +11,7 @@ export default function TopControls({
   onLoadExample,
 }) {
   return (
-    <div className="max-w-7xl mx-auto px-6 pt-4">
+    <div className="max-w-10xl mx-auto px-6 pt-4">
       <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-4">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-3 items-end">
           <div className="md:col-span-2">

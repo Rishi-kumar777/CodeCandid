@@ -634,7 +634,7 @@ export default function Simulator() {
         {algoType === "array" ? (
           <InputOutput inputArr={inputArr} setInputArr={setInputArr} outputArr={outputArr} />
         ) : algoType === "graph" ? (
-          <div className="max-w-7xl mx-auto px-6 mt-4">
+          <div className="max-w-10xl mx-auto px-6 mt-4">
             <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-4">
               <div className="text-sm font-semibold">Graph Input</div>
               <div className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">Start node for traversal</div>
@@ -656,7 +656,7 @@ export default function Simulator() {
             </div>
           </div>
         ) : (
-          <div className="max-w-7xl mx-auto px-6 mt-4">
+          <div className="max-w-10xl mx-auto px-6 mt-4">
             <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-4">
               <div className="text-sm font-semibold">DP Input (0/1 Knapsack)</div>
               <div className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">Comma-separated integers</div>
@@ -714,7 +714,7 @@ export default function Simulator() {
           </div>
         )}
 
-        <div className="max-w-7xl mx-auto px-6 mt-2 text-xs text-zinc-500">
+        <div className="max-w-10xl mx-auto px-6 mt-2 text-xs text-zinc-500">
           Debug: inputLen={inputArr.length}, steps={steps.length}, stepIndex={stepIndex}
         </div>
 
@@ -744,7 +744,7 @@ export default function Simulator() {
           feedback={mentorFeedback}
         />
 
-        <div className="max-w-7xl mx-auto px-6 mt-4">
+        <div className="max-w-10xl mx-auto px-6 mt-4">
           <div className="h-[520px]">
             <ResizableSplit
               initialLeftPct={55}
@@ -781,7 +781,7 @@ export default function Simulator() {
           </div>
         </div>
 
-        <div className="max-w-7xl mx-auto px-6 mt-4 pb-8">
+        <div className="max-w-10xl mx-auto px-6 mt-4 pb-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             <VariablesPanel vars={cur?.vars || {}} />
             <CallStackPanel stack={cur?.callStack || ["—"]} />

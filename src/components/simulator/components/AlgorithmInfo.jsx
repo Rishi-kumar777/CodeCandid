@@ -2,7 +2,7 @@ export default function AlgorithmInfo({ meta }) {
   if (!meta) return null;
 
   return (
-    <div className="max-w-7xl mx-auto px-6 mt-4 pb-10">
+    <div className="max-w-10xl mx-auto px-6 mt-4 pb-10">
       <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-5 text-zinc-900 dark:text-zinc-100">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>

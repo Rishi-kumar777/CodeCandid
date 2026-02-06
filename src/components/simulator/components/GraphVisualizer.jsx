@@ -1,5 +1,5 @@
 export default function GraphVisualizer({ show, step }) {
-  const CHART_H = 320;
+  const CHART_H = 380;
 
   if (!show) {
     return (

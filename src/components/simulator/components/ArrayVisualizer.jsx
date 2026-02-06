@@ -1,5 +1,5 @@
 export default function Visualizer({ show, arr, comparing, swapped, pointers = [] }) {
-  const CHART_H = 320;
+  const CHART_H = 400;
 
   // If steps are not built yet, show placeholder
   if (!show) {

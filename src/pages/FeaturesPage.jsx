@@ -8,7 +8,7 @@ const features = [
     img: "./src/pages/features/15.png",
   },
   {
-    title: "Call Stack Visualization",
+    title: "Call Stack Tracking",
     desc: "Understand recursion and nested function calls with a live call stack that grows and shrinks as functions execute.",
     img: "./src/pages/features/18.png",
   },

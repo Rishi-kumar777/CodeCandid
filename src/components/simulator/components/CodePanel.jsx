@@ -19,7 +19,7 @@ export default function CodePanel({ code, activeLine }) {
     <div className="h-full bg-white dark:bg-zinc-950 p-4 text-zinc-900 dark:text-zinc-100">
       <div className="text-sm font-semibold">Code (selected language)</div>
       <div className="mt-4 rounded-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden">
-        <div className="max-h-[360px] overflow-auto">
+        <div className="max-h-[400px] overflow-auto">
           {lines.map((ln, i) => (
             <CodeLine key={i} text={ln} active={i === activeLine} />
           ))}
