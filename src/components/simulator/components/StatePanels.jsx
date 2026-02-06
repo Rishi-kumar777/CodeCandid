@@ -4,7 +4,7 @@ export function VariablesPanel({ vars }) {
   const entries = Object.entries(vars || {});
 
   return (
-    <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-4 flex flex-col h-[260px]">
+    <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-4 flex flex-col h-[400px]">
       <div className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
         Variables
       </div>
@@ -35,7 +35,7 @@ export function CallStackPanel({ stack }) {
   const activeIndex = s.length - 1; // 👈 currently executing function
 
   return (
-    <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-4 flex flex-col h-[260px]">
+    <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-4 flex flex-col h-[400px]">
       <div className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
         Call Stack
       </div>
@@ -63,58 +63,7 @@ export function CallStackPanel({ stack }) {
   );
 }
 
-export function StackPanel({ stack }) {
-  const items = Array.isArray(stack) ? stack : [];
-  const hasItems = items.length > 0;
-  const display = hasItems ? [...items].reverse() : [];
-
-  return (
-    <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-4 flex flex-col h-[260px]">
-      <div className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
-        Data Stack
-      </div>
-      <div className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
-        Top element shown first
-      </div>
-
-      <div className="mt-3 flex-1 overflow-auto pr-1 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 p-3 font-mono text-xs space-y-1 scrollbar-premium">
-        {!hasItems ? (
-          <div className="text-sm text-zinc-500">—</div>
-        ) : (
-          display.map((item, i) => {
-            const isTop = i === 0;
-            const index = items.length - 1 - i;
-
-            return (
-              <div
-                key={`${index}-${String(item)}`}
-                className={[
-                  "px-2 py-1 rounded-md border transition-colors",
-                  isTop
-                    ? "bg-cyan-100 text-cyan-900 border-cyan-200 dark:bg-cyan-900/40 dark:text-cyan-200 dark:border-cyan-800/60 font-semibold"
-                    : "bg-white/60 text-zinc-700 border-zinc-200 dark:bg-zinc-950/40 dark:text-zinc-300 dark:border-zinc-800",
-                ].join(" ")}
-              >
-                <span className="mr-2 text-[10px] text-zinc-400">#{index}</span>
-                {String(item)}
-                {isTop && (
-                  <span className="ml-2 text-[10px] uppercase tracking-wide text-cyan-700 dark:text-cyan-300">
-                    Top
-                  </span>
-                )}
-              </div>
-            );
-          })
-        )}
-      </div>
-    </div>
-  );
-}
-
-
-
-
-export function StepDescPanel({ log }) {
+export function StepDescPanel({ log, invariants }) {
   const items = Array.isArray(log) ? log : [];
   const listRef = useRef(null);
 
@@ -126,15 +75,32 @@ export function StepDescPanel({ log }) {
   }, [items.length]);
 
   return (
-    <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-4 flex flex-col h-64">
+    <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-4 flex flex-col h-[400px]">
       <div className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
-        Step / Event Description
+        Step Insights
+      </div>
+
+      <div className="mt-3 space-y-2">
+
+        {Array.isArray(invariants) && invariants.length > 0 && (
+          <div className="flex flex-wrap gap-2">
+            {invariants.map((inv, idx) => (
+              <span
+                key={`${inv}-${idx}`}
+                className="text-[11px] px-2 py-1 rounded-full border border-cyan-400/30 bg-cyan-400/10 text-cyan-700 dark:text-cyan-200"
+                title="Invariant / focus cue"
+              >
+                {inv}
+              </span>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* ✅ This is the scroll container */}
       <div
         ref={listRef}
-        className="mt-3 flex-1 overflow-auto pr-1 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 p-3 text-sm leading-relaxed scrollbar-premium"
+        className="mt-3 flex-1 overflow-auto pr-1 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-3 text-sm leading-relaxed scrollbar-premium"
       >
         {items.length === 0 ? (
           <div className="text-zinc-500">Click “Build Steps” to start logging events.</div>
@@ -155,5 +121,3 @@ export function StepDescPanel({ log }) {
     </div>
   );
 }
-
-

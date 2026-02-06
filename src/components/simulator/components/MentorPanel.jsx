@@ -11,7 +11,7 @@ export default function MentorPanel({
   const q = step?.question;
 
   return (
-    <div className="max-w-[1400px] mx-auto px-4 mt-4">
+    <div className="max-w-7xl mx-auto px-6 mt-4">
       <div className="rounded-2xl border border-amber-300/60 dark:border-amber-500/40 bg-amber-50 dark:bg-amber-950/30 p-4">
         <div className="flex items-center justify-between gap-3">
           <div>
